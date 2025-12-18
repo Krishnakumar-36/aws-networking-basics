@@ -1,0 +1,88 @@
+# Day 04 – Security Groups & Network ACLs (NACL)
+
+## 1. Why Security is Important in AWS Networking
+AWS provides multiple layers of security to control inbound and outbound traffic.
+Two key network-level security components are:
+- Security Groups
+- Network Access Control Lists (NACLs)
+
+---
+
+## 2. Security Groups (SG)
+
+### What is a Security Group?
+- A **virtual firewall** for EC2 instances
+- Controls **inbound and outbound traffic**
+- Works at the **instance level**
+
+### Key Characteristics
+- **Stateful** (return traffic is automatically allowed)
+- Rules are **allow rules only**
+- Applied to **EC2 instances**
+- Supports **protocol, port, and source**
+
+### Example Rules
+- Allow SSH (22) from your IP
+- Allow HTTP (80) from anywhere
+- Allow HTTPS (443) from anywhere
+
+### Common Use Case
+- Web Server:
+  - Inbound: HTTP (80), HTTPS (443)
+  - Outbound: All traffic
+
+---
+
+## 3. Network Access Control List (NACL)
+
+### What is a NACL?
+- A firewall for **subnets**
+- Controls traffic **entering and leaving a subnet**
+- Works at the **subnet level**
+
+### Key Characteristics
+- **Stateless** (return traffic must be explicitly allowed)
+- Supports **allow and deny rules**
+- Rules are evaluated in **number order**
+- Applies to **all instances in a subnet**
+
+### Example Rules
+- Allow HTTP (80) inbound
+- Allow ephemeral ports (1024–65535) outbound
+- Deny a specific IP address
+
+---
+
+## 4. Security Group vs NACL (Comparison)
+
+| Feature | Security Group | NACL |
+|------|---------------|------|
+| Level | Instance | Subnet |
+| Stateful | Yes | No |
+| Rules | Allow only | Allow & Deny |
+| Rule Order | Not applicable | Rule number based |
+| Default | Deny all inbound | Allow all inbound |
+
+---
+
+## 5. Best Practices
+- Use **Security Groups** as the first layer of defense
+- Use **NACLs** for additional subnet-level restrictions
+- Follow **least privilege principle**
+- Avoid opening ports to `0.0.0.0/0` unless necessary
+
+---
+
+## 6. Real-World Example
+- Public Subnet:
+  - NACL: Allow HTTP/HTTPS, Deny SSH
+- EC2 Security Group:
+  - Allow SSH only from admin IP
+  - Allow HTTP from anywhere
+
+---
+
+## 7. Key Takeaways
+- Security Groups protect **instances**
+- NACLs protect **subnets**
+- Both work together for layered security
